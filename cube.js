@@ -14,9 +14,6 @@ function cycle(list, indexes) {
     list[indexes[len - 1]] = first;
 }
 
-// TODO: Define turn functions
-// TODO: Define twist and flip functions
-// TODO: Define reset functions
 /**
  * @class
  * @constructor
@@ -24,6 +21,10 @@ function cycle(list, indexes) {
  */
 export class Cube {
     constructor() {
+        this.reset()
+    }
+
+    reset() {
         /** 
          * @type {number[][]}
          * @public
@@ -42,6 +43,89 @@ export class Cube {
 
             this.edges.push([i, 0]);
         }
+    }
+
+    /**
+     * Execute a seqence of moves using WCA-compliant cube notation
+     * 
+     * NB: Rotations (x, y, z) and wide moves (Rw, Uw, Fw) are NOT currently supported.
+     * @param {string} moves
+     */
+    execute(moves) {
+        moves.toLowerCase().split(' ').forEach(move => {
+            if (move === '') return;
+
+            switch (move) {
+                case 'u':
+                    this.u();
+                    break;
+                case 'u\'':
+                    this.uPrime();
+                    break;
+                case 'u2':
+                    this.u();
+                    this.u();
+                    break;
+
+                case 'l':
+                    this.l();
+                    break;
+                case 'l\'':
+                    this.lPrime();
+                    break;
+                case 'l2':
+                    this.l();
+                    this.l();
+                    break;
+
+                case 'f':
+                    this.f();
+                    break;
+                case 'f\'':
+                    this.fPrime();
+                    break;
+                case 'f2':
+                    this.f();
+                    this.f();
+                    break;
+
+                case 'r':
+                    this.r();
+                    break;
+                case 'r\'':
+                    this.rPrime();
+                    break;
+                case 'r2':
+                    this.r();
+                    this.r();
+                    break;
+
+                case 'b':
+                    this.b();
+                    break;
+                case 'b\'':
+                    this.bPrime();
+                    break;
+                case 'b2':
+                    this.b();
+                    this.b();
+                    break;
+
+                case 'd':
+                    this.d();
+                    break;
+                case 'd\'':
+                    this.dPrime();
+                    break;
+                case 'd2':
+                    this.d();
+                    this.d();
+                    break;
+
+                default:
+                    throw new Error(`Invalid move in sequence: '${move}'`);
+            }
+        });
     }
 
     u() {
@@ -146,14 +230,14 @@ export class Cube {
         this.corners[1][1] += 2;
         this.corners[6][1] += 1;
         this.corners[7][1] += 2;
-        
+
         this.edges[0][1] += 1;
         this.edges[9][1] += 1;
         this.edges[6][1] += 1;
         this.edges[8][1] += 1;
 
         this.updateTwists([0, 1, 6, 7]);
-        this.updateFlips([0, 9, 6, 8]); 
+        this.updateFlips([0, 9, 6, 8]);
     }
 
     bPrime() {
@@ -164,14 +248,14 @@ export class Cube {
         this.corners[1][1] += 2;
         this.corners[6][1] += 1;
         this.corners[7][1] += 2;
-        
+
         this.edges[0][1] += 1;
         this.edges[9][1] += 1;
         this.edges[6][1] += 1;
         this.edges[8][1] += 1;
 
         this.updateTwists([0, 1, 6, 7]);
-        this.updateFlips([0, 9, 6, 8]); 
+        this.updateFlips([0, 9, 6, 8]);
     }
 
     d() {

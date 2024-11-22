@@ -31,7 +31,9 @@ const colorScheme = [
  */
 const displayTiles = [];
 
-displaySides.map((side) => {
+displaySides.forEach((side, i) => {
+  side.children[4].style.backgroundColor = colorScheme[i];
+
   displayTiles.push(
     side.children[0],
     side.children[1],
@@ -84,6 +86,6 @@ function drawCube(cube) {
 
 const cube = new Cube();
 
-cube.dPrime();
+cube.execute("R U R' F' R U R' U' R' F R2 U' R' U'");
 
 drawCube(cube);
