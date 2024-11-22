@@ -43,6 +43,160 @@ export class Cube {
             this.edges.push([i, 0]);
         }
     }
+
+    u() {
+        cycle(this.corners, [3, 2, 1, 0]);
+        cycle(this.edges, [3, 2, 1, 0]);
+    }
+
+    uPrime() {
+        cycle(this.corners, [0, 1, 2, 3]);
+        cycle(this.edges, [0, 1, 2, 3]);
+    }
+
+    l() {
+        cycle(this.corners, [3, 0, 7, 4]);
+        cycle(this.edges, [3, 8, 7, 11]);
+
+        this.corners[3][1] += 1;
+        this.corners[0][1] += 2;
+        this.corners[7][1] += 1;
+        this.corners[4][1] += 2;
+
+        this.updateTwists([3, 0, 7, 4]);
+    }
+
+    lPrime() {
+        cycle(this.corners, [4, 7, 0, 3]);
+        cycle(this.edges, [11, 7, 8, 3]);
+
+        this.corners[3][1] += 1;
+        this.corners[0][1] += 2;
+        this.corners[7][1] += 1;
+        this.corners[4][1] += 2;
+
+        this.updateTwists([3, 0, 7, 4]);
+    }
+
+    f() {
+        cycle(this.corners, [4, 5, 2, 3]);
+        cycle(this.edges, [11, 4, 10, 2]);
+
+        this.corners[4][1] += 1;
+        this.corners[5][1] += 2;
+        this.corners[2][1] += 1;
+        this.corners[3][1] += 2;
+
+        this.edges[11][1] += 1;
+        this.edges[4][1] += 1;
+        this.edges[10][1] += 1;
+        this.edges[2][1] += 1;
+
+        this.updateTwists([4, 5, 2, 3]);
+        this.updateFlips([11, 4, 10, 2]);
+    }
+
+    fPrime() {
+        cycle(this.corners, [3, 2, 5, 4]);
+        cycle(this.edges, [2, 10, 4, 11]);
+
+        this.corners[3][1] += 2;
+        this.corners[2][1] += 1;
+        this.corners[5][1] += 2;
+        this.corners[4][1] += 1;
+
+        this.edges[2][1] += 1;
+        this.edges[10][1] += 1;
+        this.edges[4][1] += 1;
+        this.edges[11][1] += 1;
+
+        this.updateTwists([3, 2, 5, 4]);
+        this.updateFlips([2, 10, 4, 11]);
+    }
+
+    r() {
+        cycle(this.corners, [2, 5, 6, 1]);
+        cycle(this.edges, [10, 5, 9, 1]);
+
+        this.corners[2][1] += 2;
+        this.corners[5][1] += 1;
+        this.corners[6][1] += 2;
+        this.corners[1][1] += 1;
+
+        this.updateTwists([2, 5, 6, 1]);
+    }
+
+    rPrime() {
+        cycle(this.corners, [1, 6, 5, 2]);
+        cycle(this.edges, [1, 9, 5, 10]);
+
+        this.corners[2][1] += 2;
+        this.corners[5][1] += 1;
+        this.corners[6][1] += 2;
+        this.corners[1][1] += 1;
+
+        this.updateTwists([2, 5, 6, 1]);
+    }
+
+    b() {
+        cycle(this.corners, [0, 1, 6, 7]);
+        cycle(this.edges, [0, 9, 6, 8]);
+
+        this.corners[0][1] += 1;
+        this.corners[1][1] += 2;
+        this.corners[6][1] += 1;
+        this.corners[7][1] += 2;
+        
+        this.edges[0][1] += 1;
+        this.edges[9][1] += 1;
+        this.edges[6][1] += 1;
+        this.edges[8][1] += 1;
+
+        this.updateTwists([0, 1, 6, 7]);
+        this.updateFlips([0, 9, 6, 8]); 
+    }
+
+    bPrime() {
+        cycle(this.corners, [7, 6, 1, 0]);
+        cycle(this.edges, [8, 6, 9, 0]);
+
+        this.corners[0][1] += 1;
+        this.corners[1][1] += 2;
+        this.corners[6][1] += 1;
+        this.corners[7][1] += 2;
+        
+        this.edges[0][1] += 1;
+        this.edges[9][1] += 1;
+        this.edges[6][1] += 1;
+        this.edges[8][1] += 1;
+
+        this.updateTwists([0, 1, 6, 7]);
+        this.updateFlips([0, 9, 6, 8]); 
+    }
+
+    d() {
+        cycle(this.corners, [7, 6, 5, 4]);
+        cycle(this.edges, [7, 6, 5, 4]);
+    }
+
+    dPrime() {
+        cycle(this.corners, [4, 5, 6, 7]);
+        cycle(this.edges, [4, 5, 6, 7]);
+    }
+
+    updateTwists(indexes) {
+        const len = indexes.length;
+        for (let i = 0; i < len; i++) {
+            this.corners[indexes[i]][1] %= 3;
+        }
+    }
+
+    updateFlips(indexes) {
+        const len = indexes.length;
+        for (let i = 0; i < len; i++) {
+            this.edges[indexes[i]][1] %= 2;
+        }
+    }
 }
 
 const CORNER_COLOR_MAP = [

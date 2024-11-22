@@ -65,9 +65,9 @@ function drawPiece(tileMap, colorMap) {
  */
 function drawCube(cube) {
   for (let i = 0; i < 8; i++) {
-    const cornerTileMap = getCornerTileMap(cube.corners[i]);
+    const cornerTileMap = getCornerTileMap([i, cube.corners[i][1]]);
     const cornerColorMap = getCornerColorMap(cube.corners[i]);
-    const edgeTileMap = getEdgeTileMap(cube.edges[i]);
+    const edgeTileMap = getEdgeTileMap([i, cube.edges[i][1]]);
     const edgeColorMap = getEdgeColorMap(cube.edges[i]);
 
     drawPiece(cornerTileMap, cornerColorMap);
@@ -75,7 +75,7 @@ function drawCube(cube) {
   }
 
   for (let i = 8; i < 12; i++) {
-    const edgeTileMap = getEdgeTileMap(cube.edges[i]);
+    const edgeTileMap = getEdgeTileMap([i, cube.edges[i][1]]);
     const edgeColorMap = getEdgeColorMap(cube.edges[i]);
 
     drawPiece(edgeTileMap, edgeColorMap);
@@ -84,6 +84,6 @@ function drawCube(cube) {
 
 const cube = new Cube();
 
-console.log(displayTiles);
+cube.dPrime();
 
 drawCube(cube);
