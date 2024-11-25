@@ -21,18 +21,16 @@ function cycle(list, indexes) {
  */
 export class Cube {
     constructor() {
-        this.reset()
+        this.reset();
     }
 
     reset() {
-        /** 
+        /**
          * @type {number[][]}
-         * @public
          */
         this.corners = [];
         /**
          * @type {number[][]}
-         * @public
          */
         this.edges = [];
 
@@ -47,86 +45,145 @@ export class Cube {
 
     /**
      * Execute a seqence of moves using WCA-compliant cube notation
-     * 
+     *
      * NB: Rotations (x, y, z) and wide moves (Rw, Uw, Fw) are NOT currently supported.
      * @param {string} moves
      */
     execute(moves) {
-        moves.toLowerCase().split(' ').forEach(move => {
-            if (move === '') return;
+        moves
+            .toLowerCase()
+            .split(' ')
+            .forEach((move) => {
+                if (move === '') return;
 
-            switch (move) {
-                case 'u':
-                    this.u();
-                    break;
-                case 'u\'':
-                    this.uPrime();
-                    break;
-                case 'u2':
-                    this.u();
-                    this.u();
-                    break;
+                switch (move) {
+                    case 'u':
+                        this.u();
+                        break;
+                    case "u'":
+                        this.uPrime();
+                        break;
+                    case 'u2':
+                        this.u();
+                        this.u();
+                        break;
 
-                case 'l':
-                    this.l();
-                    break;
-                case 'l\'':
-                    this.lPrime();
-                    break;
-                case 'l2':
-                    this.l();
-                    this.l();
-                    break;
+                    case 'l':
+                        this.l();
+                        break;
+                    case "l'":
+                        this.lPrime();
+                        break;
+                    case 'l2':
+                        this.l();
+                        this.l();
+                        break;
 
-                case 'f':
-                    this.f();
-                    break;
-                case 'f\'':
-                    this.fPrime();
-                    break;
-                case 'f2':
-                    this.f();
-                    this.f();
-                    break;
+                    case 'f':
+                        this.f();
+                        break;
+                    case "f'":
+                        this.fPrime();
+                        break;
+                    case 'f2':
+                        this.f();
+                        this.f();
+                        break;
 
-                case 'r':
-                    this.r();
-                    break;
-                case 'r\'':
-                    this.rPrime();
-                    break;
-                case 'r2':
-                    this.r();
-                    this.r();
-                    break;
+                    case 'r':
+                        this.r();
+                        break;
+                    case "r'":
+                        this.rPrime();
+                        break;
+                    case 'r2':
+                        this.r();
+                        this.r();
+                        break;
 
-                case 'b':
-                    this.b();
-                    break;
-                case 'b\'':
-                    this.bPrime();
-                    break;
-                case 'b2':
-                    this.b();
-                    this.b();
-                    break;
+                    case 'b':
+                        this.b();
+                        break;
+                    case "b'":
+                        this.bPrime();
+                        break;
+                    case 'b2':
+                        this.b();
+                        this.b();
+                        break;
 
-                case 'd':
-                    this.d();
-                    break;
-                case 'd\'':
-                    this.dPrime();
-                    break;
-                case 'd2':
-                    this.d();
-                    this.d();
-                    break;
+                    case 'd':
+                        this.d();
+                        break;
+                    case "d'":
+                        this.dPrime();
+                        break;
+                    case 'd2':
+                        this.d();
+                        this.d();
+                        break;
 
-                default:
-                    throw new Error(`Invalid move in sequence: '${move}'`);
-            }
-        });
+                    default:
+                        throw new Error(`Invalid move in sequence: '${move}'`);
+                }
+            });
     }
+
+    // Note: Does not yet prevent 2-swap
+    scramble() {
+        // Shuffle edges
+        for (let i = 12; i > 0; i--) {
+            const randomIndex = Math.floor(Math.random() * i);
+            const currentIndex = i - 1;
+
+            [this.edges[currentIndex], this.edges[randomIndex]] = [
+                this.edges[randomIndex],
+                this.edges[currentIndex],
+            ];
+        }
+
+        // Flip edges
+        let parity = 0;
+
+        for (let i = 0; i < 11; i++) {
+            const flip = Math.round(Math.random());
+
+            parity += flip;
+            parity %= 2;
+
+            this.edges[currentIndex][1] = flip;
+        }
+
+        // Ensure parity is maintained
+        this.edges[11][1] = parity;
+
+        // Shuffle corners
+        for (let i = 8; i > 0; i--) {
+            let randomIndex = Math.floor(Math.random() * i);
+            let currentIndex = i - 1;
+
+            [this.corners[currentIndex], this.corners[randomIndex]] = [
+                this.corners[randomIndex],
+                this.corners[currentIndex],
+            ];
+        }
+
+        // Twist corners
+        parity = 0;
+
+        for (let i = 0; i < 7; i++) {
+            const orientation = Math.floor(Math.random() * 3);
+
+            parity += orientation;
+            parity %= 3;
+
+            this.corners[i][1] = orientation;
+        }
+
+        this.corners[7][1] = (3 - parity) % 3;
+    }
+
+    // #region move defs
 
     u() {
         cycle(this.corners, [3, 2, 1, 0]);
@@ -268,6 +325,8 @@ export class Cube {
         cycle(this.edges, [4, 5, 6, 7]);
     }
 
+    // #endregion moves
+
     updateTwists(indexes) {
         const len = indexes.length;
         for (let i = 0; i < len; i++) {
@@ -310,7 +369,7 @@ const EDGE_COLOR_MAP = [
 
 /**
  * Get the color map for a given corner.
- * @param {number[]} corner 
+ * @param {number[]} corner
  * @returns {number[]}
  */
 export function getCornerColorMap(corner) {
@@ -319,7 +378,7 @@ export function getCornerColorMap(corner) {
 
 /**
  * Get the color map for a given edge.
- * @param {number[]} edge 
+ * @param {number[]} edge
  * @returns {number[]}
  */
 export function getEdgeColorMap(edge) {
@@ -353,7 +412,7 @@ const EDGE_TILE_MAP = [
 
 /**
  * Get the tile IDs in the correct fill order for a given corner piece.
- * @param {number[]} corner 
+ * @param {number[]} corner
  * @returns {number[]}
  */
 export function getCornerTileMap(corner) {
@@ -371,7 +430,7 @@ export function getCornerTileMap(corner) {
 
 /**
  * Get the tile IDs in the correct fill order for a given edge piece.
- * @param {number[]} edge 
+ * @param {number[]} edge
  * @returns {number[]}
  */
 export function getEdgeTileMap(edge) {

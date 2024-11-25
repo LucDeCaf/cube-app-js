@@ -1,5 +1,11 @@
-import './style.css'
-import { Cube, getCornerColorMap, getCornerTileMap, getEdgeTileMap, getEdgeColorMap } from './cube.js';
+import './style.css';
+import {
+    Cube,
+    getCornerColorMap,
+    getCornerTileMap,
+    getEdgeTileMap,
+    getEdgeColorMap,
+} from './cube.js';
 
 /** @type {HTMLDivElement} */
 const displayU = document.querySelector('#displayU');
@@ -14,16 +20,22 @@ const displayB = document.querySelector('#displayB');
 /** @type {HTMLDivElement} */
 const displayD = document.querySelector('#displayD');
 
-const displaySides = [displayU, displayL, displayF, displayR, displayB, displayD];
+const displaySides = [
+    displayU,
+    displayL,
+    displayF,
+    displayR,
+    displayB,
+    displayD,
+];
 
-// TODO: Link center piece colors to colorScheme
 const colorScheme = [
-  '#ffffff', // U
-  '#ffaa00', // L
-  '#00ff00', // F
-  '#ff0000', // R
-  '#0000ff', // B
-  '#ffff00', // D
+    '#ffffff', // U
+    '#ffaa00', // L
+    '#00ff00', // F
+    '#ff0000', // R
+    '#0000ff', // B
+    '#ffff00', // D
 ];
 
 /**
@@ -32,19 +44,19 @@ const colorScheme = [
 const displayTiles = [];
 
 displaySides.forEach((side, i) => {
-  side.children[4].style.backgroundColor = colorScheme[i];
+    side.children[4].style.backgroundColor = colorScheme[i];
 
-  displayTiles.push(
-    side.children[0],
-    side.children[1],
-    side.children[2],
-    side.children[3],
-    // side.children[4] is center piece
-    side.children[5],
-    side.children[6],
-    side.children[7],
-    side.children[8],
-  );
+    displayTiles.push(
+        side.children[0],
+        side.children[1],
+        side.children[2],
+        side.children[3],
+        // side.children[4] is center piece
+        side.children[5],
+        side.children[6],
+        side.children[7],
+        side.children[8]
+    );
 });
 
 /**
@@ -53,35 +65,35 @@ displaySides.forEach((side, i) => {
  * @param {number[]} colorMap
  */
 function drawPiece(tileMap, colorMap) {
-  for (let i = 0; i < tileMap.length; i++) {
-    const tile = displayTiles[tileMap[i]];
-    const color = colorScheme[colorMap[i]];
+    for (let i = 0; i < tileMap.length; i++) {
+        const tile = displayTiles[tileMap[i]];
+        const color = colorScheme[colorMap[i]];
 
-    tile.style.backgroundColor = color;
-  }
+        tile.style.backgroundColor = color;
+    }
 }
 
 /**
  * Draw or update the drawing of the cube in the display area.
- * @param {Cube} cube 
+ * @param {Cube} cube
  */
 function drawCube(cube) {
-  for (let i = 0; i < 8; i++) {
-    const cornerTileMap = getCornerTileMap([i, cube.corners[i][1]]);
-    const cornerColorMap = getCornerColorMap(cube.corners[i]);
-    const edgeTileMap = getEdgeTileMap([i, cube.edges[i][1]]);
-    const edgeColorMap = getEdgeColorMap(cube.edges[i]);
+    for (let i = 0; i < 8; i++) {
+        const cornerTileMap = getCornerTileMap([i, cube.corners[i][1]]);
+        const cornerColorMap = getCornerColorMap(cube.corners[i]);
+        const edgeTileMap = getEdgeTileMap([i, cube.edges[i][1]]);
+        const edgeColorMap = getEdgeColorMap(cube.edges[i]);
 
-    drawPiece(cornerTileMap, cornerColorMap);
-    drawPiece(edgeTileMap, edgeColorMap);
-  }
+        drawPiece(cornerTileMap, cornerColorMap);
+        drawPiece(edgeTileMap, edgeColorMap);
+    }
 
-  for (let i = 8; i < 12; i++) {
-    const edgeTileMap = getEdgeTileMap([i, cube.edges[i][1]]);
-    const edgeColorMap = getEdgeColorMap(cube.edges[i]);
+    for (let i = 8; i < 12; i++) {
+        const edgeTileMap = getEdgeTileMap([i, cube.edges[i][1]]);
+        const edgeColorMap = getEdgeColorMap(cube.edges[i]);
 
-    drawPiece(edgeTileMap, edgeColorMap);
-  }
+        drawPiece(edgeTileMap, edgeColorMap);
+    }
 }
 
 const cube = new Cube();
